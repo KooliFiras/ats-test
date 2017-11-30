@@ -1,0 +1,4 @@
+product:
+    type: rest
+    resource: ProductBundle\Controller\DefaultController
+    prefix: /api

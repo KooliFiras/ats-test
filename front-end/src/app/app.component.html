@@ -1,0 +1,73 @@
+
+<nav *ngIf='!loading'>
+  <div class="nav-wrapper input-field">
+        <select materialize="material_select" [materializeSelectOptions]="selectOptions" (change)="onChange($event)">
+          <option value=''>Filter By Categorie</option>
+          <option *ngFor='let categorie of categories' [value]='categorie'>{{categorie}}</option>
+        </select>
+  </div>
+</nav>
+
+<table *ngIf='!loading' class="bordered striped highlight" >
+  <thead>
+  <tr>
+    <th></th>
+    <th>Product Name</th>
+    <th>Base Price</th>
+    <th>Category</th>
+    <th>Brand</th>
+    <th>product Material</th>
+    <th>Delivery</th>
+    <th>Details</th>
+    <th>Reviews</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr *ngFor='let product of filteredItems | paginate: { itemsPerPage: 5, currentPage: p }'>
+    <img [src]="product.imageUrl" [style.width.px]='width' [style.height.px]='height'>
+    <td>{{product.productName}}</td>
+    <td>{{product.basePrice}}</td>
+    <td>{{product.category}}</td>
+    <td>{{product.brand}}</td>
+    <td>{{product.productMaterial}}</td>
+    <td>{{product.delivery}}</td>
+    <td>{{product.details}}</td>
+    <td><a class="btn btn-floating pulse" (click)='openModal(product.reviews)'><i class="material-icons">remove_red_eye</i></a></td>
+  </tr>
+  </tbody>
+</table>
+
+<pagination-controls *ngIf='!loading'  (pageChange)="p = $event"></pagination-controls >
+
+
+<!-- Modal Structure -->
+<div id="modal" class="modal " materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+  <div class="modal-content">
+
+    <ul class="collapsible popout" data-collapsible="accordion">
+      <li *ngFor='let review of reviews'>
+        <div class="collapsible-header"><i class="material-icons">stars</i>Rating {{review.rating}}</div>
+        <div class="collapsible-body"><span>{{review.content}}</span></div>
+      </li>
+    </ul>
+
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-light btn modal-trigger" (click)="closeModal()">Close</a>
+
+  </div>
+</div>
+
+
+<!-- preloader-->
+<div  *ngIf='loading' class="preloader-wrapper big active" style="margin-top:16rem; margin-left: 45%" >
+  <div class="spinner-layer spinner-blue">
+    <div class="circle-clipper left">
+      <div class="circle"></div>
+    </div><div class="gap-patch">
+    <div class="circle"></div>
+  </div><div class="circle-clipper right">
+    <div class="circle"></div>
+  </div>
+  </div>
